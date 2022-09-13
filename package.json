@@ -1,0 +1,43 @@
+{
+  "name": "m-and-c-photos",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.0",
+    "@emotion/server": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/lab": "^5.0.0-alpha.96",
+    "@mui/material": "^5.10.2",
+    "@mui/x-date-pickers": "^5.0.0",
+    "@react-google-maps/api": "^2.12.2",
+    "@sendgrid/mail": "^7.7.0",
+    "axios": "^0.27.2",
+    "babel-preset-es2015": "^6.24.1",
+    "dayjs": "^1.11.5",
+    "formik": "^2.2.9",
+    "lodash": "^4.17.21",
+    "material-ui-phone-number": "^3.0.0",
+    "moment": "^2.29.4",
+    "mui-tel-input": "^2.0.1",
+    "next": "12.2.5",
+    "nodemailer": "^6.7.8",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-file-viewer": "^1.2.1",
+    "react-material-ui-carousel": "^3.4.2",
+    "underscore": "^1.13.4",
+    "use-google-maps-script": "^0.1.2",
+    "use-places-autocomplete": "^4.0.0"
+  },
+  "devDependencies": {
+    "eslint": "8.22.0",
+    "eslint-config-next": "12.2.5"
+  }
+}
