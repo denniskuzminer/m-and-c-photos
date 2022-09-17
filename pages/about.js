@@ -26,8 +26,8 @@ export default function About() {
                 key={i}
                 priority
                 alt=""
-                layout={"fill"}
-                objectFit={"contain"}
+                layout="fill"
+                objectFit="contain"
                 src={e}
                 className="about-marina-img"
               />
@@ -35,7 +35,7 @@ export default function About() {
           </div>
           <div
             className="about-marina-description"
-            style={{ marginLeft: "-60px" }}
+            // style={{ marginLeft: "-60px" }}
           >
             <Typography variant="h4">
               <b>Hi there!</b> We{`'`}re Chris and Marina Petersen located in
@@ -51,7 +51,7 @@ export default function About() {
             </Typography>
             <br />
             <SecondaryTypography variant="h3" className="about-title">
-              <b> We can help make your dream a reality!</b>
+              <b>We can help make your dream a reality!</b>
             </SecondaryTypography>
           </div>
         </div>

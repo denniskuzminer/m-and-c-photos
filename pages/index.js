@@ -9,26 +9,34 @@ import Image from "next/image";
 import EastIcon from "@mui/icons-material/East";
 import WestIcon from "@mui/icons-material/West";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import { Fragment } from "react";
+import { LayeredImage } from "react-layered-image";
+
+const carouselImages = importAll(
+  require.context(
+    "../public/resources/landing/carousel",
+    false,
+    /\.(png|jpe?g|svg)$/
+  )
+);
+
+const pageImages = importAll(
+  require.context(
+    "../public/resources/landing/page",
+    false,
+    /\.(png|jpe?g|svg)$/
+  )
+);
+
+const logoImages = importAll(
+  require.context("../public/resources/logo", false, /\.(png|jpe?g|svg)$/)
+);
 
 export default function Home() {
-  const carouselImages = importAll(
-    require.context(
-      "../public/resources/landing/carousel",
-      false,
-      /\.(png|jpe?g|svg)$/
-    )
-  );
-
-  const pageImages = importAll(
-    require.context(
-      "../public/resources/landing/page",
-      false,
-      /\.(png|jpe?g|svg)$/
-    )
-  );
-
   return (
-    <div className="root">
+    <div
+    // className="root"
+    >
       <Head>
         <title>M&C Photography</title>
         <meta
@@ -38,7 +46,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <NavBar />
+        <NavBar home />
         <Carousel
           navButtonsAlwaysVisible
           swipe
@@ -67,7 +75,20 @@ export default function Home() {
           className="carousel"
         >
           {carouselImages.map((e, i) => (
-            <Image priority alt="" src={e} key={i} layout="intrinsic" />
+            <div key={i} className="carousel-image-container">
+              <div className="overlap-images">
+                <Image priority src={e} layout="responsive" />
+                {logoImages && (
+                  <Image
+                    priority
+                    src={logoImages[0]}
+                    layout="responsive"
+                    // layout="fixed"
+                    className="carousel-logo"
+                  />
+                )}
+              </div>
+            </div>
           ))}
         </Carousel>
         <div className="landing-description">
@@ -83,9 +104,13 @@ export default function Home() {
             graduations & more!
           </Typography>
         </div>
-        {pageImages.map((e, i) => (
-          <Image priority alt="" src={e} key={i} layout="intrinsic" />
-        ))}
+        {/* <div>
+          {pageImages.map((e, i) => (
+            <>
+              <Image priority alt="" src={e} key={i} layout="intrinsic" />
+            </>
+          ))}
+        </div> */}
       </div>
       <Footer />
       <footer></footer>

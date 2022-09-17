@@ -31,6 +31,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-file-viewer": "^1.2.1",
+    "react-layered-image": "^2.0.9",
     "react-material-ui-carousel": "^3.4.2",
     "underscore": "^1.13.4",
     "use-google-maps-script": "^0.1.2",

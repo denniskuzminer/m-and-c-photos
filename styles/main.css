@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Amatic+SC&family=Quicksand&display=swap");
-
 .root {
   margin: 2% 5% 2% 5%;
 }
@@ -7,6 +5,45 @@
 .carousel {
   /* height: 1000px; */
   /* background-color: blue; */
+}
+.nav-home-styles {
+  /* position: absolute;
+  */
+
+  width: 100%;
+  z-index: 9999999;
+  position: absolute;
+  backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, 0.15);
+  /* -webkit-mask-image: linear-gradient(to bottom, black 10%, transparent 170%);
+  mask-image: linear-gradient(to bottom, black 10%, transparent 170%); */
+}
+.nav-home-wrapper-styles {
+  height: 100%;
+  position: relative;
+}
+.overlap-images {
+  display: grid;
+  grid-template-areas: "overlay";
+}
+
+.overlap-images > span {
+  grid-area: overlay;
+}
+.overlap-images > div {
+  grid-area: overlay;
+}
+.carousel-logo {
+  /* background-color: white !important; */
+  box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.3);
+  /* backdrop-filter: blur(1px) invert(0%); */
+  /* background */
+  border-radius: 40px;
+  filter: invert(100%);
+  max-width: 15% !important;
+  max-height: 15% !important;
+  min-width: 15% !important;
+  min-height: 15% !important;
 }
 .landing-description {
   text-align: center;
@@ -165,10 +202,11 @@ nav.fill ul li a:hover:after {
   /* border: 5px orange solid; */
 }
 .about-marina-img {
-  border-radius: 10px;
+  /* border: 1px black solid !important; */
+  /* border-radius: 100px; */
 }
-/* Footer Styles */
 
+/* Footer Styles */
 .footer-image {
   /* background-color: blue; */
   flex: 1;

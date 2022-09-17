@@ -1,9 +1,9 @@
 import { Typography } from "@mui/material";
 
-export default function NavBar() {
+export default function NavBar({ home }) {
   return (
-    <div>
-      <nav className="fill nav-wrapper">
+    <div className={home ? "nav-home-wrapper-styles" : ""}>
+      <nav className={"fill nav-wrapper " + (home ? "nav-home-styles" : "")}>
         <div className="title">
           <Typography variant="h1">
             M & C<br />
