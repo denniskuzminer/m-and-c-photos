@@ -9,7 +9,7 @@ import Image from "next/image";
 import EastIcon from "@mui/icons-material/East";
 import WestIcon from "@mui/icons-material/West";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { LayeredImage } from "react-layered-image";
 
 const carouselImages = importAll(
@@ -20,36 +20,35 @@ const carouselImages = importAll(
   )
 );
 
-const pageImages = importAll(
-  require.context(
-    "../public/resources/landing/page",
-    false,
-    /\.(png|jpe?g|svg)$/
-  )
-);
-
 const logoImages = importAll(
   require.context("../public/resources/logo", false, /\.(png|jpe?g|svg)$/)
 );
 
 export default function Home() {
+  const [pageImages, setPageImages] = useState([]);
+
+  useEffect(() => {
+    setPageImages(
+      importAll(
+        require.context(
+          "../public/resources/landing/page",
+          false,
+          /\.(png|jpe?g|svg)$/
+        )
+      )
+    );
+  }, []);
+
   return (
-    <div
-    // className="root"
-    >
-      <Head>
-        <title>M&C Photography</title>
-        <meta
-          name="description"
-          content="We are Marina + Christopher, New York/New Jersey-based husband + wife photographers capturing engagements, showers, weddings, maternity, family, graduations + more!"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div className="root">
+      <NavBar home />
       <div>
-        <NavBar home />
         <Carousel
           navButtonsAlwaysVisible
           swipe
+          sx={{
+            borderRadius: "10px",
+          }}
           navButtonsProps={{
             sx: {
               background: "transparent !important",
@@ -77,16 +76,21 @@ export default function Home() {
           {carouselImages.map((e, i) => (
             <div key={i} className="carousel-image-container">
               <div className="overlap-images">
-                <Image priority src={e} layout="responsive" />
-                {logoImages && (
+                <Image
+                  priority
+                  src={e}
+                  alt=""
+                  // layout="responsive"
+                />
+                {/* {logoImages && (
                   <Image
                     priority
                     src={logoImages[0]}
                     layout="responsive"
-                    // layout="fixed"
+                    alt=""
                     className="carousel-logo"
                   />
-                )}
+                )} */}
               </div>
             </div>
           ))}
@@ -104,16 +108,23 @@ export default function Home() {
             graduations & more!
           </Typography>
         </div>
-        {/* <div>
-          {pageImages.map((e, i) => (
-            <>
-              <Image priority alt="" src={e} key={i} layout="intrinsic" />
-            </>
-          ))}
-        </div> */}
+      </div>
+      <div>
+        {pageImages.map((e, i) => (
+          <Image
+            priority
+            alt=""
+            src={e}
+            style={{
+              borderRadius: "10px",
+            }}
+            key={i}
+            // height={"500px"}
+            // width={"500px"}
+          />
+        ))}
       </div>
       <Footer />
-      <footer></footer>
     </div>
   );
 }

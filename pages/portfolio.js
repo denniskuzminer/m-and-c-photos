@@ -17,22 +17,27 @@ const images = importAll(
   require.context("../public/resources/portfolio", false, /\.(png|jpe?g|svg)$/)
 );
 
-function FadeInSection(props) {
-  const [isVisible, setVisible] = useState(false);
+function FadeInSection({ children }) {
   const domRef = useRef();
+  const [isVisible, setVisible] = useState(false);
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => setVisible(entry.isIntersecting));
+      if (entries[0].isIntersecting) {
+        setVisible(true);
+        observer.unobserve(domRef.current);
+      }
     });
     observer.observe(domRef.current);
+    return () => observer.disconnect();
   }, []);
+
   return (
-    <div
-      className={`fade-in-section ${isVisible ? "is-visible" : ""}`}
+    <section
       ref={domRef}
+      className={"fade-in-section " + (isVisible ? " is-visible" : "")}
     >
-      {props.children}
-    </div>
+      {children}
+    </section>
   );
 }
 
@@ -48,14 +53,13 @@ export default function Portfolio() {
           <b>Weddings, Couples, Families, Events, & more!</b>
         </SecondaryTypography>
       </div>
-      <Masonry columns={4} spacing={2}>
+      <Masonry columns={4} spacing={2} defaultColumns={4} defaultSpacing={2}>
         {shuffle(images).map((e, i) => (
           <FadeInSection key={i} className="portfolio-image-container">
             <Image priority alt="" src={e} className="portfolio-image" />
           </FadeInSection>
         ))}
       </Masonry>
-      {/* Display if #portfolio-heading-container is not in view. Animate in  */}
       {/* <Scroll showBelow={250} /> */}
       <Footer />
     </div>

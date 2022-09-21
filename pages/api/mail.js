@@ -1,45 +1,39 @@
 /* eslint-disable import/no-anonymous-default-export */
-const mail = require("@sendgrid/mail");
+import sendgrid from "@sendgrid/mail";
 
-mail.setApiKey(process.env.NEXT_PUBLIC_SG_API_KEY);
+sendgrid.setApiKey(process.env.NEXT_PUBLIC_SG_API_KEY);
 
 export default async (req, res) => {
-  console.log("REQ.BODY", req.body);
-  const body = JSON.parse(JSON.stringify(req.body));
+  const { body } = req.body;
 
   const message = `
-    Name: ${body.name}\r\n
-    Email: ${body.email}\r\n
-    Message: ${body.message}
+  Hello,\r\n
+  \r\n
+  A new reservation for M&C Photography has come in! Here is the info:\r\n
+  Name: ${body["Name"]}\r\n
+  Email: ${body["Email"]}\r\n
+  Phone number: ${body["Phone number"]}\r\n
+  Event type: ${body["Event type"]}\r\n
+  Location: ${body["Location"]}\r\n
+  Time: ${new Date(body["Time"]).toLocaleString("en-US")}\r\n
+  Event details: ${body["Event details"]}\r\n
+  \r\n
+  Thanks\r\n  
   `;
 
-  await mail.send({
-    to: "denniskuzminer@gmail.com",
-    from: "denniskuzminer@gmail.com",
-    subject: "New Message!",
-    text: message,
-    html: message.replace(/\r\n/g, "<br>"),
-  });
-
-  res.status(200).json({ status: "Ok" });
+  try {
+    await sendgrid.send({
+      to: "mandcphotographynj@gmail.com",
+      from: {
+        email: "no-reply@m-cphotography.com",
+        name: "M&C Photography Bookings",
+      },
+      subject: `You've got a new reservation!`,
+      text: message,
+      html: message.replace(/\r\n/g, "<br>"),
+    });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({ error: error.message });
+  }
+  return res.status(200).json({ error: "" });
 };
-// export default (req, res) => {
-
-// console.log(req.body);
-// try {
-//   // console.log("REQ.BODY", req.body);
-//   mail
-//     .send({
-//       to: "denniskuzminer@gmail.com", // Your email where you'll receive emails
-//       from: "denniskuzminer@gmail.com", // your website email address here
-//       subject: `${req.body.subject}`,
-//       html: `<div>You've got a mail</div>`,
-//     })
-//     .then(() => console.log("email successfully fulfilled"));
-// } catch (error) {
-//   // console.log(error);
-//   res.status(error.statusCode || 500).json({ error: error.message });
-// }
-
-// res.status(200).json({ error: "" });
-// };

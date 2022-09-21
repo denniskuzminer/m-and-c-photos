@@ -15,6 +15,8 @@ import {
   CardHeader,
 } from "@mui/material";
 import Image from "next/image";
+import FormHelperText from "@mui/material/FormHelperText";
+
 import { useFormik } from "formik";
 // import MuiPhoneNumber from "material-ui-phone-number";
 import { MuiTelInput } from "mui-tel-input";
@@ -27,6 +29,8 @@ import Socials from "../components/socials";
 import { Fragment, useState, memo, useCallback } from "react";
 import SecondaryTypography from "../components/secondaryTypography";
 import { LoadingButton } from "@mui/lab";
+import MuiPhoneNumber from "material-ui-phone-number";
+
 // import Autocomplete from "react-google-autocomplete";
 import dayjs, { Dayjs } from "dayjs";
 import Stack from "@mui/material/Stack";
@@ -51,6 +55,11 @@ const fields = [
 
 const emails = ["mkuzminer1@gmail.com", "89cpetersen@gmail.com"];
 
+const dateIsValid = (date) => {
+  console.log(date);
+  return date !== "" && date instanceof Date && !isNaN(date);
+};
+
 const EMAIL_STATUS = {
   UNSENT: 1,
   SENDING: 2,
@@ -62,91 +71,67 @@ const images = importAll(
   require.context("../public/resources/contact", false, /\.(png|jpe?g|svg)$/)
 );
 
-const libraries = ["places"];
+// const libraries = ["places"];
 
 const Contact = () => {
   const [emailStatus, setEmailStatus] = useState(EMAIL_STATUS.UNSENT);
+  const [errors, setErrors] = useState({});
+
   const formik = useFormik({
     initialValues: fields.reduce((o, key) => ({ ...o, [key]: "" }), {}),
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-      axios
-        .post("/api/mail", { body: JSON.stringify(values) })
-        .then(() => console.log("email successfully fulfilled"));
-    },
-  });
-  const { isLoaded, loadError } = useGoogleMapsScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY ?? "",
-    libraries,
-  });
-
-  // const { isLoaded } = useLoadScript({
-  //   googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
-  //
-  // });
-  const {
-    ready,
-    value: locationValue,
-    suggestions: { status, data },
-    setValue: setLocationValue,
-    clearSuggestions,
-  } = usePlacesAutocomplete({ debounce: 300 });
-
-  const handleLocationValueChange = (e) => {
-    console.log(e);
-    setLocationValue(e.target.value);
-    formik.handleChange(e);
-  };
-
-  // const handleFormDataChange = (event, name) => {
-  //   setFormData((prev) => ({ ...prev, [name]: event.target.value }));
-  // };
-  const handleValueChange = useCallback(
-    (e, value) => {
-      formik.setFieldValue(e, value);
-    },
-    [formik.setFieldValue, formik]
-  );
-
-  const handleSelect = (val) => {
-    setLocationValue(val, false);
-  };
-
-  const handleContactSubmit = (e) => {
-    e.preventDefault();
-
-    console.log(e);
-    console.log("sunmmiter");
-    /*await*/ sendEmail(e); //.then()
-    // Email marina
-    // In then
-    setEmailStatus(EMAIL_STATUS.SENT); // or ERROR
-  };
-
-  const /*async*/ sendEmail = (e) => {
+    validateOnChange: false,
+    validateOnBlur: false,
+    onSubmit: async (values, { resetForm }) => {
+      // if (!dateIsValid(values["Time"])) {
+      //   setErrors((prevState) => ({
+      //     ...prevState,
+      //     Time: "Error: Date is not valid.",
+      //   }));
+      //   return;
+      // }
       setEmailStatus(EMAIL_STATUS.SENDING);
-    };
+      await axios
+        .post("/api/mail", { body: values })
+        .then((res) => {
+          setEmailStatus(EMAIL_STATUS.SENT);
+          console.log("email successfully fulfilled");
+          resetForm();
+          setErrors({});
+        })
+        .catch((err) => {
+          setEmailStatus(EMAIL_STATUS.ERROR);
+          console.log(error);
+        });
+    },
+  });
+
+  const getDefaultFieldParams = (e) => ({
+    variant: "outlined",
+    onChange: formik.handleChange,
+    value: formik.values[e],
+    name: e,
+    // required: true,
+    size: "small",
+    id: e,
+    className: "contact-field",
+  });
 
   const handleAnotherEventClick = () => {
     setEmailStatus(EMAIL_STATUS.UNSENT);
   };
 
-  // if (!isLoaded) return <div>Loading...</div>;
   return (
-    <div>
+    <div className="root">
       <NavBar />
-      {/* {console.log(ready, value, { suggestions: { status, data } }, setValue)} */}
       <center className="contact-banner-container">
         <div className="contact-banner-box">
           <SecondaryTypography variant="h2" className="contact-banner">
-            <b>Engage</b>
+            <b>Engage!</b>
           </SecondaryTypography>
           <SecondaryTypography variant="h4" className="contact-banner">
             <b>
-              I&apos;d love to hear from you. So, fill out the form, and be one
-              step closer
-              
-              to photos that will last a lifetime!
+              We{`'`}d love to hear from you. So, fill out the form, and be one
+              step closer to photos that will last a lifetime!
             </b>
           </SecondaryTypography>
         </div>
@@ -159,7 +144,6 @@ const Contact = () => {
               <>
                 {fields.map((e, i) => (
                   <Fragment key={i}>
-                    {/* {console.log(data.map(({ _, description }) => description))} */}
                     <label htmlFor={e}>
                       <Typography variant="h6">{e}:</Typography>
                     </label>
@@ -169,68 +153,70 @@ const Contact = () => {
                           <DateTimePicker
                             onChange={(value) => formik.setFieldValue(e, value)}
                             value={formik.values[e]}
+                            ignoreInvalidInputs
                             name={e}
                             id={e}
-                            inputFormat="MM/DD/YYYY HH:MM"
-                            className="contact-field"
+                            disablePast
+                            className="contact-field time-field"
                             renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                inputProps={{
-                                  ...params.inputProps,
-                                  placeholder: "MM/DD/YYYY HH:MM",
-                                }}
-                              />
+                              <>
+                                <TextField
+                                  {...params}
+                                  // helperText={
+                                  //   errors["Time"] ? "Date is not valid" : ""
+                                  // }
+                                  error={dateIsValid(formik.values[e])}
+                                  inputProps={{
+                                    ...params.inputProps,
+                                    // placeholder: "MM/DD/YYYY HH:mm (A|P)M",
+                                  }}
+                                />
+                                {errors["Time"] && (
+                                  <FormHelperText
+                                    style={{
+                                      color: "red",
+                                      fontSize: "16px",
+                                    }}
+                                  >
+                                    <b>Time is not valid</b>
+                                  </FormHelperText>
+                                )}
+                              </>
                             )}
                           />
                         </LocalizationProvider>
                       ),
-                      Location: (
-                        <Autocomplete
-                          disablePortal
-                          id={e}
-                          freeSolo
-                          onChange={(e) => console.log(e)}
-                          options={data.map(
-                            ({ _, description }) => description
-                          )}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              value={locationValue}
-                              onChange={handleLocationValueChange}
-                              // autoComplete="false"
-                              name={e}
-                            />
-                          )}
-                        />
-                      ),
                       "Phone number": (
-                        <MuiTelInput
-                          defaultCountry={["US"]}
-                          preferredCountries={["US"]}
-                          variant="outlined"
-                          // onChange={handleValueChange.bind(this, e)}
-                          value={formik.values[e]}
-                          name={e}
-                          // required
-                          size="small"
-                          id={e}
-                          className="contact-field"
+                        // <MuiTelInput
+                        //   defaultCountry={["US"]}
+                        //   preferredCountries={["US"]}
+                        //   variant="outlined"
+                        //   // onChange={handleValueChange.bind(this, e)}
+                        //   // value={formik.values[e]}
+                        //   // onChange={(e) => {
+                        //   //   console.log(e);
+                        //   // }}
+                        //   value={value}
+                        //   onChange={handleChange}
+                        //   // onChange={formik.handleChange}
+                        //   // required
+                        //   size="small"
+                        // />
+
+                        <MuiPhoneNumber
+                          {...getDefaultFieldParams(e)}
+                          onChange={(value) => formik.setFieldValue(e, value)}
+                          defaultCountry={"us"}
+                          preferredCountries={["us"]}
+                          disableAreaCodes={true}
+                          autoFormat={false}
                         />
                       ),
                     }[e] || (
                       <TextField
-                        variant="outlined"
-                        onChange={formik.handleChange}
-                        value={formik.values[e]}
-                        name={e}
-                        required
+                        {...getDefaultFieldParams(e)}
                         multiline={e === "Event details"}
-                        size="small"
-                        id={e}
                         rows={e === "Event details" ? 4 : 1}
-                        className="contact-field"
                       />
                     )}
                     <br />
@@ -261,23 +247,27 @@ const Contact = () => {
             ) : emailStatus === EMAIL_STATUS.SENT ||
               emailStatus === EMAIL_STATUS.ERROR ? (
               <div className="contact-sending">
-                <Card className="contact-banner-sent">
+                <div className="contact-banner-sent">
                   <SecondaryTypography variant="h4">
-                    {emailStatus === EMAIL_STATUS.SENT ? "Success" : "Error"}
+                    <b>
+                      {emailStatus === EMAIL_STATUS.SENT ? "Success" : "Error"}
+                    </b>
                   </SecondaryTypography>
                   <SecondaryTypography variant="h5" className="contact-banner">
                     {emailStatus === EMAIL_STATUS.SENT ? (
-                      <SecondaryTypography variant="h5">
+                      <b>
                         Thank you! An email has been sent to Marina and Chris
                         with your information. <br />
                         You can either add another event or return to the main
                         page.
-                      </SecondaryTypography>
+                      </b>
                     ) : (
-                      <SecondaryTypography variant="h5">
+                      <b>
                         There was an error in submitting your information.
-                        Please either try again or try later.
-                      </SecondaryTypography>
+                        Please either try again or try later. If this error
+                        persists, feel free to email Marina and Chris directly
+                        at mandcphotographynj@gmail.com
+                      </b>
                     )}
                   </SecondaryTypography>
                   {/* <CardActionArea> */}
@@ -286,20 +276,14 @@ const Contact = () => {
                       <Button
                         variant="contained"
                         sx={{
-                          borderRadius: "0px !important",
+                          marginRight: "10px",
                         }}
                         size="large"
                         onClick={handleAnotherEventClick}
                       >
                         Add another event
                       </Button>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          borderRadius: "0px !important",
-                        }}
-                        size="large"
-                      >
+                      <Button variant="contained" size="large">
                         <a href="./">Go to home</a>
                       </Button>
                     </>
@@ -316,16 +300,23 @@ const Contact = () => {
                     </Button>
                   )}
                   {/* </CardActionArea> */}
-                </Card>
+                </div>
               </div>
             ) : (
               <></>
             )}
           </div>
         </form>
-        <div className="contact-inner">
+        <div className="contact-inner contact-image-container">
           {images.map((e, i) => (
-            <Image key={i} priority alt="" src={e} className="contact-image" />
+            <Image
+              key={i}
+              priority
+              alt=""
+              src={e}
+              // objectFit="unset"
+              className="contact-image"
+            />
           ))}
           {/* <img alt="" src={images[0]} className="contact-image" /> */}
         </div>

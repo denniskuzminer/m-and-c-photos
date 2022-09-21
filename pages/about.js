@@ -23,20 +23,16 @@ export default function About() {
           <div className="about-marina-description about-marina-img-container">
             {images.map((e, i) => (
               <Image
-                key={i}
                 priority
+                key={i}
                 alt=""
-                layout="fill"
                 objectFit="contain"
                 src={e}
                 className="about-marina-img"
               />
             ))}
           </div>
-          <div
-            className="about-marina-description"
-            // style={{ marginLeft: "-60px" }}
-          >
+          <div className="about-marina-description">
             <Typography variant="h4">
               <b>Hi there!</b> We{`'`}re Chris and Marina Petersen located in
               Central New Jersey! We are high school sweethearts who originally

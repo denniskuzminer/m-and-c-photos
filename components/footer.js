@@ -12,19 +12,12 @@ const images = importAll(
 
 export default function Footer() {
   return (
-    <div className="footer">
-      <div className="footer-title">
-        <Typography>Check us out on Instagram</Typography>
-      </div>
-      <div className="footer-images-container">
-        {images.map((e, i) => (
-          <Box key={i} className="footer-image">
-            <Image priority alt="" src={e} />
-          </Box>
-        ))}
-      </div>
-      <div className="footer-info-container">
-        <div className="footer-instagram-link-container">
+    <footer>
+      <div className="footer">
+        <div className="footer-title">
+          <Typography>Check us out on Instagram</Typography>
+        </div>
+        <center>
           <Button
             variant="contained"
             sx={{ background: "#8b9da3", borderRadius: "0px !important" }}
@@ -41,23 +34,33 @@ export default function Footer() {
               </a>
             </Typography>
           </Button>
+        </center>
+        <div className="footer-images-container">
+          {images.map((e, i) => (
+            <Box key={i} className="footer-image">
+              <Image priority alt="" src={e} />
+            </Box>
+          ))}
         </div>
-        <div className="footer-links-container">
-          <Typography className="footer-link">
-            <a
-              href="privacy-policy-terms-conditions"
-              className="privacy-policy-terms-conditions-link"
-            >
-              Privacy Policy and Terms & Conditions
-            </a>
-          </Typography>
-          <Typography className="footer-link footer-center">
-            Husband and wife photographers located in the NYC/NJ area and
-            traveling to wherever your story is!
-          </Typography>
-          <Socials />
+        <div className="footer-info-container">
+          <div className="footer-instagram-link-container"></div>
+          <div className="footer-links-container">
+            <Typography className="footer-link">
+              <a
+                href="privacy-policy-terms-conditions"
+                className="privacy-policy-terms-conditions-link"
+              >
+                Privacy Policy and Terms & Conditions
+              </a>
+            </Typography>
+            <Typography className="footer-link footer-center">
+              Husband and wife photographers located in the NYC/NJ area and
+              traveling to wherever your story is!
+            </Typography>
+            <Socials />
+          </div>
         </div>
       </div>
-    </div>
+    </footer>
   );
 }
