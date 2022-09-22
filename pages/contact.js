@@ -69,13 +69,13 @@ const Contact = () => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: async (values, { resetForm }) => {
-      if (!dateIsValid(values["Time"])) {
-        setErrors((prevState) => ({
-          ...prevState,
-          Time: "Error: Date is not valid.",
-        }));
-        return;
-      }
+      // if (!dateIsValid(values["Time"])) {
+      //   setErrors((prevState) => ({
+      //     ...prevState,
+      //     Time: "Error: Date is not valid.",
+      //   }));
+      //   return;
+      // }
       setEmailStatus(EMAIL_STATUS.SENDING);
       await axios
         .post("/api/mail", { body: values })

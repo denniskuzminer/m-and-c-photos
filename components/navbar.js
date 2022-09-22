@@ -1,9 +1,9 @@
-import { Typography, IconButton, Dialog } from "@mui/material";
+import { Typography, IconButton } from "@mui/material";
 import { importAll } from "../utils/importUtils";
 import Head from "next/head";
 import { useCurrentBreakpointName, setDefaultWidth } from "react-socks";
 import Image from "next/image";
-import { Fragment, useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 const logoImages = importAll(
   require.context("../public/resources/logo2", false, /\.(png|jpe?g|svg)$/)
@@ -33,16 +33,18 @@ const navItems = [
 ];
 
 export default function NavBar() {
-  const breakpoint = useCurrentBreakpointName();
-  setDefaultWidth(
-    {
-      xsmall: 0,
-      small: 376,
-      medium: 426,
-      large: 769,
-      xlarge: 1025,
-    }[breakpoint]
-  );
+  // setDefaultWidth(
+  //   {
+  //     xsmall: 0,
+  //     small: 376,
+  //     medium: 426,
+  //     large: 769,
+  //     xlarge: 1025,
+  //   }[breakpoint]
+  // );
+  const bp = useCurrentBreakpointName();
+
+  const [breakpoint, setBreakpoint] = useState("");
   const [openMobileMenu, setOpenMobileMenu] = useState(false);
 
   function NavItemsHTML({ containerClass }) {
@@ -75,6 +77,10 @@ export default function NavBar() {
     }
   }, [openMobileMenu]);
 
+  useEffect(() => {
+    setBreakpoint(bp);
+  }, [bp]);
+
   return (
     <div>
       <Head>
@@ -91,44 +97,41 @@ export default function NavBar() {
           </div>
         </center>
         {["medium", "small", "xsmall"].includes(breakpoint) && (
-          <>
-            <IconButton
-              onClick={handleOpenMobileMenu}
-              className="hamburger-icon"
-            >
-              <svg
-                className={
-                  "ham hamRotate ham4 " + (openMobileMenu ? "active" : "")
-                }
-                viewBox="0 0 100 100"
-                width="60"
-              >
-                <path
-                  className="line top"
-                  d="m 70,33 h -40 c 0,0 -8.5,-0.149796 -8.5,8.5 0,8.649796 8.5,8.5 8.5,8.5 h 20 v -20"
-                />
-                <path className="line middle" d="m 70,50 h -40" />
-                <path
-                  className="line bottom"
-                  d="m 30,67 h 40 c 0,0 8.5,0.149796 8.5,-8.5 0,-8.649796 -8.5,-8.5 -8.5,-8.5 h -20 v 20"
-                />
-              </svg>
-            </IconButton>
-            <ul
+          <IconButton onClick={handleOpenMobileMenu} className="hamburger-icon">
+            <svg
               className={
-                "nav-item-mobile-container " +
-                (openMobileMenu
-                  ? breakpoint === "medium"
-                    ? "nav-item-mobile-container-active-medium"
-                    : "nav-item-mobile-container-active"
-                  : "")
+                "ham hamRotate ham4 " + (openMobileMenu ? "active" : "")
               }
+              viewBox="0 0 100 100"
+              width="60"
             >
-              <NavItemsHTML containerClass={"nav-item-mobile"} />
-            </ul>
-          </>
+              <path
+                className="line top"
+                d="m 70,33 h -40 c 0,0 -8.5,-0.149796 -8.5,8.5 0,8.649796 8.5,8.5 8.5,8.5 h 20 v -20"
+              />
+              <path className="line middle" d="m 70,50 h -40" />
+              <path
+                className="line bottom"
+                d="m 30,67 h 40 c 0,0 8.5,0.149796 8.5,-8.5 0,-8.649796 -8.5,-8.5 -8.5,-8.5 h -20 v 20"
+              />
+            </svg>
+          </IconButton>
         )}
-        {["large", "xlarge"].includes(breakpoint) && (
+        {["medium", "small", "xsmall"].includes(breakpoint) && (
+          <ul
+            className={
+              "nav-item-mobile-container " +
+              (openMobileMenu
+                ? breakpoint === "medium"
+                  ? "nav-item-mobile-container-active-medium"
+                  : "nav-item-mobile-container-active"
+                : "")
+            }
+          >
+            <NavItemsHTML containerClass={"nav-item-mobile"} />
+          </ul>
+        )}
+        {(!breakpoint || ["large", "xlarge"].includes(breakpoint)) && (
           <ul className="link-list">
             <NavItemsHTML containerClass={"nav-item"} />
           </ul>

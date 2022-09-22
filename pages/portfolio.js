@@ -4,9 +4,22 @@ import NavBar from "../components/navbar";
 import { importAll } from "../utils/importUtils";
 import Image from "next/image";
 import { shuffle } from "underscore";
-import { Masonry } from "@mui/lab";
 import SecondaryTypography from "../components/secondaryTypography";
 import { useCurrentBreakpointName } from "react-socks";
+import { memo } from "react";
+import { NoSsr } from "@mui/base";
+import { Masonry } from "@mui/lab";
+// import Masonry from "react-responsive-masonry";
+
+const images = shuffle(
+  importAll(
+    require.context(
+      `../public/resources/portfolio/compressed`,
+      false,
+      /\.(png|jpe?g|svg)$/
+    )
+  )
+);
 
 const responsiveSettings = {
   masonryColumns: {
@@ -23,11 +36,21 @@ const responsiveSettings = {
     large: 2,
     default: 2,
   },
+  // masonrySpacing: {
+  //   xsmall: "8px",
+  //   small: "8px",
+  //   medium: "14px",
+  //   large: "25px",
+  //   default: "25px",
+  // },
+  banner: {
+    xsmall: "h4",
+    small: "h4",
+    medium: "h3",
+    large: "h3",
+    default: "h3",
+  },
 };
-
-const images = importAll(
-  require.context("../public/resources/portfolio", false, /\.(png|jpe?g|svg)$/)
-);
 
 function FadeInSection({ children }) {
   const domRef = useRef();
@@ -54,34 +77,54 @@ function FadeInSection({ children }) {
   );
 }
 
-export default function Portfolio() {
+export default memo(function Portfolio() {
   const breakpoint = useCurrentBreakpointName();
-  const { masonryColumns, masonrySpacing } = responsiveSettings;
+  const { masonryColumns, masonrySpacing, banner } = responsiveSettings;
 
   return (
-    <div className="root">
-      <NavBar />
-      <div
-        className="portfolio-heading-container"
-        id="portfolio-heading-container"
-      >
-        <SecondaryTypography variant="h3" className="portfolio-heading">
-          <b>Weddings, Couples, Families, Events, & more!</b>
-        </SecondaryTypography>
+    <NoSsr>
+      <div className="root">
+        <NavBar />
+        <div
+          className="portfolio-heading-container"
+          id="portfolio-heading-container"
+        >
+          <SecondaryTypography
+            variant={banner[breakpoint] || banner.default}
+            className="portfolio-heading"
+          >
+            <b>Weddings, Couples, Families, Events, & more!</b>
+          </SecondaryTypography>
+        </div>
+        <Masonry
+          columns={
+            // Count
+            masonryColumns[breakpoint] || masonryColumns.default
+          }
+          // gutter
+          spacing={masonrySpacing[breakpoint] || masonrySpacing.default}
+          // defaultColumns={4}
+          // defaultSpacing={2}
+        >
+          {images.map((e, i) => (
+            <div key={i}>
+              <FadeInSection className="portfolio-image-container">
+                <Image
+                  // priority
+                  alt=""
+                  src={e}
+                  className="portfolio-image"
+                  // layout="intrinsic"
+                  placeholder="blur"
+                  objectfill="contain"
+                  quality={40}
+                />
+              </FadeInSection>
+            </div>
+          ))}
+        </Masonry>
+        <Footer />
       </div>
-      <Masonry
-        columns={masonryColumns[breakpoint] || masonryColumns.default}
-        spacing={masonrySpacing[breakpoint] || masonrySpacing.default}
-        defaultColumns={4}
-        defaultSpacing={2}
-      >
-        {shuffle(images).map((e, i) => (
-          <FadeInSection key={i} className="portfolio-image-container">
-            <Image priority alt="" src={e} className="portfolio-image" />
-          </FadeInSection>
-        ))}
-      </Masonry>
-      <Footer />
-    </div>
+    </NoSsr>
   );
-}
+});

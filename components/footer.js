@@ -96,7 +96,7 @@ export default function Footer() {
           <div className="footer-images-container">
             {images.map((e, i) => (
               <Box key={i} className="footer-image">
-                <Image priority alt="" src={e} />
+                <Image alt="" src={e} />
               </Box>
             ))}
           </div>
@@ -105,23 +105,23 @@ export default function Footer() {
           <div style={{ marginTop: "10px" }}>
             <div className="footer-images-container">
               <Box className="footer-image">
-                <Image priority alt="" src={images[0]} />
+                <Image alt="" src={images[0]} />
               </Box>
               <Box className="footer-image">
-                <Image priority alt="" src={images[1]} />
+                <Image alt="" src={images[1]} />
               </Box>
             </div>
             <div className="footer-images-container">
               <Box className="footer-image">
-                <Image priority alt="" src={images[2]} />
+                <Image alt="" src={images[2]} />
               </Box>
               <Box className="footer-image">
-                <Image priority alt="" src={images[3]} />
+                <Image alt="" src={images[3]} />
               </Box>
             </div>
             <center style={{ width: "100%" }}>
               <Box className="footer-image" style={{ width: "46%" }}>
-                <Image priority alt="" src={images[4]} />
+                <Image alt="" src={images[4]} />
               </Box>
             </center>
           </div>
