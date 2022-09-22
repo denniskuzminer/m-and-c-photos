@@ -1,45 +1,17 @@
 import Footer from "../components/footer";
 import NavBar from "../components/navbar";
 import TextField from "@mui/material/TextField";
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
-import {
-  Button,
-  Typography,
-  Option,
-  Select,
-  LinearProgress,
-  MenuItem,
-  CircularProgress,
-  Card,
-  CardActionArea,
-  CardHeader,
-} from "@mui/material";
+import { Button, Typography, CircularProgress } from "@mui/material";
 import Image from "next/image";
 import FormHelperText from "@mui/material/FormHelperText";
-
 import { useFormik } from "formik";
-// import MuiPhoneNumber from "material-ui-phone-number";
-import { MuiTelInput } from "mui-tel-input";
-
-import { useGoogleMapsScript } from "use-google-maps-script";
-import usePlacesAutocomplete from "use-places-autocomplete";
-import Autocomplete from "@mui/material/Autocomplete";
-
 import Socials from "../components/socials";
-import { Fragment, useState, memo, useCallback } from "react";
+import { Fragment, useState, memo } from "react";
 import SecondaryTypography from "../components/secondaryTypography";
-import { LoadingButton } from "@mui/lab";
-import MuiPhoneNumber from "material-ui-phone-number";
-
-// import Autocomplete from "react-google-autocomplete";
-import dayjs, { Dayjs } from "dayjs";
-import Stack from "@mui/material/Stack";
+import { useCurrentBreakpointName } from "react-socks";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import axios from "axios";
 import { importAll } from "../utils/importUtils";
 
@@ -53,7 +25,22 @@ const fields = [
   "Event details",
 ];
 
-const emails = ["mkuzminer1@gmail.com", "89cpetersen@gmail.com"];
+const responsiveSettings = {
+  contactBannerTitle: {
+    xsmall: "h4",
+    small: "h4",
+    medium: "h3",
+    large: "h2",
+    default: "h2",
+  },
+  contactBanner: {
+    xsmall: "h6",
+    small: "h6",
+    medium: "h5",
+    large: "h4",
+    default: "h4",
+  },
+};
 
 const dateIsValid = (date) => {
   console.log(date);
@@ -71,9 +58,9 @@ const images = importAll(
   require.context("../public/resources/contact", false, /\.(png|jpe?g|svg)$/)
 );
 
-// const libraries = ["places"];
-
 const Contact = () => {
+  const { contactBannerTitle, contactBanner } = responsiveSettings;
+  const breakpoint = useCurrentBreakpointName();
   const [emailStatus, setEmailStatus] = useState(EMAIL_STATUS.UNSENT);
   const [errors, setErrors] = useState({});
 
@@ -82,13 +69,13 @@ const Contact = () => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: async (values, { resetForm }) => {
-      // if (!dateIsValid(values["Time"])) {
-      //   setErrors((prevState) => ({
-      //     ...prevState,
-      //     Time: "Error: Date is not valid.",
-      //   }));
-      //   return;
-      // }
+      if (!dateIsValid(values["Time"])) {
+        setErrors((prevState) => ({
+          ...prevState,
+          Time: "Error: Date is not valid.",
+        }));
+        return;
+      }
       setEmailStatus(EMAIL_STATUS.SENDING);
       await axios
         .post("/api/mail", { body: values })
@@ -110,7 +97,7 @@ const Contact = () => {
     onChange: formik.handleChange,
     value: formik.values[e],
     name: e,
-    // required: true,
+    required: true,
     size: "small",
     id: e,
     className: "contact-field",
@@ -124,11 +111,25 @@ const Contact = () => {
     <div className="root">
       <NavBar />
       <center className="contact-banner-container">
-        <div className="contact-banner-box">
-          <SecondaryTypography variant="h2" className="contact-banner">
+        <div
+          className={
+            ["large", "xlarge"].includes(breakpoint)
+              ? "contact-banner-box"
+              : "contact-banner-box-mobile"
+          }
+        >
+          <SecondaryTypography
+            variant={
+              contactBannerTitle[breakpoint] || contactBannerTitle.default
+            }
+            className="contact-banner"
+          >
             <b>Engage!</b>
           </SecondaryTypography>
-          <SecondaryTypography variant="h4" className="contact-banner">
+          <SecondaryTypography
+            variant={contactBanner[breakpoint] || contactBanner.default}
+            className="contact-banner"
+          >
             <b>
               We{`'`}d love to hear from you. So, fill out the form, and be one
               step closer to photos that will last a lifetime!
@@ -136,10 +137,20 @@ const Contact = () => {
           </SecondaryTypography>
         </div>
       </center>
-      {console.log("render")}
-      <div className="contact-container">
+      {console.log(breakpoint)}
+      <div
+        className={
+          ["large", "xlarge"].includes(breakpoint) ? "contact-container" : ""
+        }
+      >
         <form className="contact-inner" onSubmit={formik.handleSubmit}>
-          <div className="contact-field-container">
+          <div
+            className={
+              ["large", "xlarge"].includes(breakpoint)
+                ? "contact-field-container"
+                : "contact-field-container-mobile"
+            }
+          >
             {emailStatus === EMAIL_STATUS.UNSENT ? (
               <>
                 {fields.map((e, i) => (
@@ -186,32 +197,32 @@ const Contact = () => {
                           />
                         </LocalizationProvider>
                       ),
-                      "Phone number": (
-                        // <MuiTelInput
-                        //   defaultCountry={["US"]}
-                        //   preferredCountries={["US"]}
-                        //   variant="outlined"
-                        //   // onChange={handleValueChange.bind(this, e)}
-                        //   // value={formik.values[e]}
-                        //   // onChange={(e) => {
-                        //   //   console.log(e);
-                        //   // }}
-                        //   value={value}
-                        //   onChange={handleChange}
-                        //   // onChange={formik.handleChange}
-                        //   // required
-                        //   size="small"
-                        // />
+                      // "Phone number": (
+                      // <MuiTelInput
+                      //   defaultCountry={["US"]}
+                      //   preferredCountries={["US"]}
+                      //   variant="outlined"
+                      //   // onChange={handleValueChange.bind(this, e)}
+                      //   // value={formik.values[e]}
+                      //   // onChange={(e) => {
+                      //   //   console.log(e);
+                      //   // }}
+                      //   value={value}
+                      //   onChange={handleChange}
+                      //   // onChange={formik.handleChange}
+                      //   // required
+                      //   size="small"
+                      // />
 
-                        <MuiPhoneNumber
-                          {...getDefaultFieldParams(e)}
-                          onChange={(value) => formik.setFieldValue(e, value)}
-                          defaultCountry={"us"}
-                          preferredCountries={["us"]}
-                          disableAreaCodes={true}
-                          autoFormat={false}
-                        />
-                      ),
+                      // <MuiPhoneNumber
+                      //   {...getDefaultFieldParams(e)}
+                      //   onChange={(value) => formik.setFieldValue(e, value)}
+                      //   defaultCountry={"us"}
+                      //   preferredCountries={["us"]}
+                      //   disableAreaCodes={true}
+                      //   autoFormat={false}
+                      // />
+                      // ),
                     }[e] || (
                       <TextField
                         {...getDefaultFieldParams(e)}
@@ -266,7 +277,7 @@ const Contact = () => {
                         There was an error in submitting your information.
                         Please either try again or try later. If this error
                         persists, feel free to email Marina and Chris directly
-                        at mandcphotographynj@gmail.com
+                        at mandcphotographynj@gmail.com.
                       </b>
                     )}
                   </SecondaryTypography>
@@ -307,20 +318,26 @@ const Contact = () => {
             )}
           </div>
         </form>
-        <div className="contact-inner contact-image-container">
-          {images.map((e, i) => (
-            <Image
-              key={i}
-              priority
-              alt=""
-              src={e}
-              // objectFit="unset"
-              className="contact-image"
-            />
-          ))}
-          {/* <img alt="" src={images[0]} className="contact-image" /> */}
+        <div
+          className={
+            "contact-image-container " +
+            (["large", "xlarge"].includes(breakpoint)
+              ? "contact-inner"
+              : "contact-field-container-mobile")
+          }
+        >
+          <div className="contact-image-inner">
+            {images.map((e, i) => (
+              <Image
+                key={i}
+                priority
+                alt=""
+                src={e}
+                className="contact-image"
+              />
+            ))}
+          </div>
         </div>
-        {/* <div className="contact-image contact-inner">This will be an image</div> */}
       </div>
       <Footer />
     </div>

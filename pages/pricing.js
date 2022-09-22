@@ -11,17 +11,11 @@ export default function Pricing() {
   return (
     <div className="root">
       <NavBar />
-      {images.map((e, i) => (
-        <Image
-          key={i}
-          priority
-          height={"1150px"}
-          layout="responsive"
-          objectFit="contain"
-          alt=""
-          src={e}
-        />
-      ))}
+      <div className="pricing-container">
+        {images.map((e, i) => (
+          <Image key={i} priority objectFit="contain" alt="" src={e} />
+        ))}
+      </div>
       <Footer />
     </div>
   );

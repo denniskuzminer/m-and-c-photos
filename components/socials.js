@@ -2,12 +2,9 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import InstagramIcon from "@mui/icons-material/Instagram";
 
 export default function Socials() {
-return (
+  return (
     <div className="footer-link footer-right">
-      <a href="mailto:89cpetersen@gmail.com">
-        <EmailOutlinedIcon />
-      </a>
-      <a href="mailto:mkuzminer1@gmail.com">
+      <a href="mailto:mandcphotographynj@gmail.com">
         <EmailOutlinedIcon />
       </a>
       <a

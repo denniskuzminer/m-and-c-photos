@@ -33,6 +33,7 @@
     "react-file-viewer": "^1.2.1",
     "react-layered-image": "^2.0.9",
     "react-material-ui-carousel": "^3.4.2",
+    "react-socks": "^2.2.0",
     "underscore": "^1.13.4",
     "use-google-maps-script": "^0.1.2",
     "use-places-autocomplete": "^4.0.0"

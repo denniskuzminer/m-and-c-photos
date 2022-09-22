@@ -41,13 +41,14 @@ export default function Home() {
 
   return (
     <div className="root">
-      <NavBar home />
+      <NavBar />
       <div>
         <Carousel
           navButtonsAlwaysVisible
           swipe
           sx={{
             borderRadius: "10px",
+            marginTop: "10px",
           }}
           navButtonsProps={{
             sx: {
@@ -61,7 +62,7 @@ export default function Home() {
             sx: {
               marginTop: "-80px",
               marginBottom: "10px",
-              zIndex: "2147483647",
+              zIndex: "99",
               position: "relative",
             },
           }}
@@ -73,24 +74,10 @@ export default function Home() {
           IndicatorIcon={<CameraAltIcon />}
           className="carousel"
         >
-          {carouselImages.map((e, i) => (
+          {carouselImages.reverse().map((e, i) => (
             <div key={i} className="carousel-image-container">
               <div className="overlap-images">
-                <Image
-                  priority
-                  src={e}
-                  alt=""
-                  // layout="responsive"
-                />
-                {/* {logoImages && (
-                  <Image
-                    priority
-                    src={logoImages[0]}
-                    layout="responsive"
-                    alt=""
-                    className="carousel-logo"
-                  />
-                )} */}
+                <Image priority src={e} alt="" />
               </div>
             </div>
           ))}

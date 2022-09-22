@@ -1,17 +1,29 @@
 import Footer from "../components/footer";
 import { useEffect, useState, useRef } from "react";
 import NavBar from "../components/navbar";
-import Grid from "@mui/material/Grid";
-import Item from "@mui/material/Grid";
 import { importAll } from "../utils/importUtils";
 import Image from "next/image";
-import { sample, shuffle } from "underscore";
-import { Avatar, Typography } from "@mui/material";
+import { shuffle } from "underscore";
 import { Masonry } from "@mui/lab";
-import { styled } from "@mui/material/styles";
-// import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-// import IconButton from "@mui/core/IconButton";
 import SecondaryTypography from "../components/secondaryTypography";
+import { useCurrentBreakpointName } from "react-socks";
+
+const responsiveSettings = {
+  masonryColumns: {
+    xsmall: 2,
+    small: 2,
+    medium: 3,
+    large: 4,
+    default: 4,
+  },
+  masonrySpacing: {
+    xsmall: 1.3,
+    small: 1.3,
+    medium: 1.6,
+    large: 2,
+    default: 2,
+  },
+};
 
 const images = importAll(
   require.context("../public/resources/portfolio", false, /\.(png|jpe?g|svg)$/)
@@ -20,6 +32,7 @@ const images = importAll(
 function FadeInSection({ children }) {
   const domRef = useRef();
   const [isVisible, setVisible] = useState(false);
+
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
@@ -42,6 +55,9 @@ function FadeInSection({ children }) {
 }
 
 export default function Portfolio() {
+  const breakpoint = useCurrentBreakpointName();
+  const { masonryColumns, masonrySpacing } = responsiveSettings;
+
   return (
     <div className="root">
       <NavBar />
@@ -53,77 +69,19 @@ export default function Portfolio() {
           <b>Weddings, Couples, Families, Events, & more!</b>
         </SecondaryTypography>
       </div>
-      <Masonry columns={4} spacing={2} defaultColumns={4} defaultSpacing={2}>
+      <Masonry
+        columns={masonryColumns[breakpoint] || masonryColumns.default}
+        spacing={masonrySpacing[breakpoint] || masonrySpacing.default}
+        defaultColumns={4}
+        defaultSpacing={2}
+      >
         {shuffle(images).map((e, i) => (
           <FadeInSection key={i} className="portfolio-image-container">
             <Image priority alt="" src={e} className="portfolio-image" />
           </FadeInSection>
         ))}
       </Masonry>
-      {/* <Scroll showBelow={250} /> */}
       <Footer />
     </div>
   );
 }
-
-// const useStyles = makeStyles((theme) => ({
-//   toTop: {
-//     zIndex: 2,
-//     position: "fixed",
-//     bottom: "2vh",
-//     backgroundColor: "#DCDCDC",
-//     color: "black",
-//     "&:hover, &.Mui-focusVisible": {
-//       transition: "0.3s",
-//       color: "#397BA6",
-//       backgroundColor: "#DCDCDC",
-//     },
-//     [theme.breakpoints.up("xs")]: {
-//       right: "5%",
-//       backgroundColor: "rgb(220,220,220,0.7)",
-//     },
-//     [theme.breakpoints.up("lg")]: {
-//       right: "6.5%",
-//     },
-//   },
-// }));
-
-// const Scroll = ({ showBelow }) => {
-//   const classes = useStyles();
-
-//   const [show, setShow] = useState(showBelow ? false : true);
-
-//   const handleScroll = () => {
-//     if (window.pageYOffset > showBelow) {
-//       if (!show) setShow(true);
-//     } else {
-//       if (show) setShow(false);
-//     }
-//   };
-
-//   const handleClick = () => {
-//     window[`scrollTo`]({ top: 0, behavior: `smooth` });
-//   };
-
-//   useEffect(() => {
-//     if (showBelow) {
-//       window.addEventListener(`scroll`, handleScroll);
-//       return () => window.removeEventListener(`scroll`, handleScroll);
-//     }
-//   });
-
-//   return (
-//     <div>
-//       {show && (
-//         <IconButton
-//           onClick={handleClick}
-//           className={classes.toTop}
-//           aria-label="to top"
-//           component="span"
-//         >
-//           <ExpandLessIcon />
-//         </IconButton>
-//       )}
-//     </div>
-//   );
-// };
