@@ -26,6 +26,10 @@ const navItems = [
     name: "Contact",
     link: "contact",
   },
+  // {
+  //   name: "Presets",
+  //   link: "presets",
+  // },
   {
     name: "About",
     link: "about",

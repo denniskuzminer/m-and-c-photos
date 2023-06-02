@@ -48,7 +48,7 @@ export default function Footer() {
           href="privacy-policy-terms-conditions"
           className="privacy-policy-terms-conditions-link"
         >
-          Privacy Policy and Terms & Conditions
+          {/* Privacy Policy and Terms & Conditions */}
         </a>
       </Typography>
       <Typography className="footer-link footer-center">

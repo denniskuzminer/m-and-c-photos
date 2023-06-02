@@ -96,7 +96,6 @@ export default function About() {
           <b>About Us</b>
         </SecondaryTypography>
         <br />
-        {console.log(breakpoint)}
         {["xsmall", "small"].includes(breakpoint) ? (
           <center className="about-marina-container-mobile">
             {descriptionComponent}

@@ -98,6 +98,7 @@
   right: 0;
   height: 100vh;
   width: 100vw;
+  margin-block-start: 0% !important;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -415,6 +416,10 @@ nav.fill ul li a:hover:after {
   display: flex;
 }
 
+.masonry {
+  margin: 0% !important;
+}
+
 .portfolio-heading {
   margin: 2% 0% 2% 0%;
   text-align: center;
@@ -427,6 +432,17 @@ nav.fill ul li a:hover:after {
   position: fixed;
   bottom: 4%;
   right: 2%;
+}
+
+.presets-heading {
+  margin: 2% 0% 0.6% 0%;
+  text-align: center;
+  /* background: #8b9da3; */
+}
+.presets-description {
+  margin: 0% 14% 2% 14%;
+  text-align: center;
+  /* background: #8b9da3; */
 }
 
 /* Keyframes */

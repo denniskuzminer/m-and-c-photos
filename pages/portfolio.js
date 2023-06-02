@@ -97,6 +97,7 @@ export default memo(function Portfolio() {
           </SecondaryTypography>
         </div>
         <Masonry
+        className="masonry"
           columns={
             // Count
             masonryColumns[breakpoint] || masonryColumns.default
