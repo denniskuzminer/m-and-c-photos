@@ -12,7 +12,7 @@ function ImageViewer({ images, initIndex, ...imageProps }) {
   const [index, setIndex] = useState(initIndex);
 
   const handleClickOpen = () => {
-    setIndex(initIndex)
+    setIndex(initIndex);
     setOpen(true);
   };
 
@@ -63,7 +63,7 @@ function ImageViewer({ images, initIndex, ...imageProps }) {
           <div
             style={{
               display: "flex",
-              alignItems: "space-between",
+              alignItems: "center",
               justifyContent: "space-between",
             }}
           >

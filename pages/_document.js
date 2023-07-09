@@ -22,6 +22,11 @@ export default class MyDocument extends Document {
             crossOrigin="true"
           />
           <link
+            rel="preload"
+            href="https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:wght@100&family=Josefin+Sans:wght@100&family=League+Script&family=Montserrat+Alternates:wght@200&display=swap"
+            as="style"
+          />
+          <link
             href="https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:wght@100&family=Josefin+Sans:wght@100&family=League+Script&family=Montserrat+Alternates:wght@200&display=swap"
             rel="stylesheet"
           />

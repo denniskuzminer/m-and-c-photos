@@ -25,8 +25,8 @@
   border: 5px yellow solid !important;
 }
 .landing-root {
-  margin-left: 14%;
-  margin-right: 14%;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 .overlap-images {
   display: grid;
@@ -57,7 +57,7 @@
 }
 .landing-description {
   text-align: center;
-  margin: 30px 0px 30px 0px;
+  margin: 1.8% 0px 1.8% 0px;
   letter-spacing: 0.15rem;
 }
 .landing-image {

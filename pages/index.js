@@ -11,6 +11,7 @@ import WestIcon from "@mui/icons-material/West";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { Fragment, useEffect, useState } from "react";
 import { LayeredImage } from "react-layered-image";
+import { useCurrentBreakpointName } from "react-socks";
 
 const carouselImages = importAll(
   require.context(
@@ -26,6 +27,9 @@ const logoImages = importAll(
 
 export default function Home() {
   const [pageImages, setPageImages] = useState([]);
+  const [swipe, setSwipe] = useState(false);
+
+  const breakpoint = useCurrentBreakpointName();
 
   useEffect(() => {
     setPageImages(
@@ -39,13 +43,26 @@ export default function Home() {
     );
   }, []);
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setSwipe(true);
+    }, 2000);
+
+    return () => clearTimeout(timeoutId);
+  }, []);
+
   return (
-    <div className="root landing-root">
+    <div
+      className={
+        "root" +
+        (["large", "xlarge"].includes(breakpoint) ? " landing-root" : "")
+      }
+    >
       <NavBar />
       <div>
         <Carousel
           navButtonsAlwaysVisible
-          swipe
+          swipe={swipe}
           sx={{
             borderRadius: "10px",
             marginTop: "10px",
@@ -83,7 +100,9 @@ export default function Home() {
           ))}
         </Carousel>
         <div className="landing-description">
-          <Typography variant="h5">
+          <Typography
+            variant={["large", "xlarge"].includes(breakpoint) ? "h5" : "h6"}
+          >
             Hi! We are Marina & Christopher,
             <br />
             New York/New Jersey-based husband & wife
