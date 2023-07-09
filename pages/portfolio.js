@@ -9,6 +9,7 @@ import { useCurrentBreakpointName } from "react-socks";
 import { memo } from "react";
 import { NoSsr } from "@mui/base";
 import { Masonry } from "@mui/lab";
+import ImageViewer from "../components/imageViewer";
 // import Masonry from "react-responsive-masonry";
 
 const images = shuffle(
@@ -97,7 +98,7 @@ export default memo(function Portfolio() {
           </SecondaryTypography>
         </div>
         <Masonry
-        className="masonry"
+          className="masonry"
           columns={
             // Count
             masonryColumns[breakpoint] || masonryColumns.default
@@ -108,14 +109,14 @@ export default memo(function Portfolio() {
           // defaultSpacing={2}
         >
           {images.map((e, i) => (
-            <div key={i}>
-              <FadeInSection className="portfolio-image-container">
-                <Image
-                  // priority
+            <div key={i} className="portfolio-image-container">
+              <FadeInSection>
+                <ImageViewer
+                  images={images}
+                  initIndex={i}
                   alt=""
                   src={e}
                   className="portfolio-image"
-                  // layout="intrinsic"
                   placeholder="blur"
                   objectfill="contain"
                   quality={40}

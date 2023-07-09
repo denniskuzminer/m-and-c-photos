@@ -24,6 +24,10 @@
 .nav-logo {
   border: 5px yellow solid !important;
 }
+.landing-root {
+  margin-left: 14%;
+  margin-right: 14%;
+}
 .overlap-images {
   display: grid;
   grid-template-areas: "overlay";
@@ -44,7 +48,7 @@
   /* backdrop-filter: blur(1px) invert(0%); */
   /* background */
   border-radius: 40px;
-  top: 12% !important;
+  top: 19% !important;
   filter: invert(100%);
   max-width: 15% !important;
   max-height: 15% !important;
@@ -92,6 +96,11 @@
   overflow: hidden !important;
 }
 .nav-item-mobile-container {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+  overflow-y: hidden;
   position: absolute;
   top: -100vh;
   left: 0;
@@ -434,6 +443,16 @@ nav.fill ul li a:hover:after {
   right: 2%;
 }
 
+.portfolio-image-container {
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+.portfolio-image-container:hover {
+  transform: translateY(-10px);
+}
+
+/* Presets */
 .presets-heading {
   margin: 2% 0% 0.6% 0%;
   text-align: center;
@@ -461,6 +480,7 @@ nav.fill ul li a:hover:after {
     background: #8b9da3;
   }
 }
+
 /* problematic */
 /* @keyframes fadeIn {
   0% {

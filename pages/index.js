@@ -18,7 +18,7 @@ const carouselImages = importAll(
     false,
     /\.(png|jpe?g|svg)$/
   )
-);
+).reverse();
 
 const logoImages = importAll(
   require.context("../public/resources/logo", false, /\.(png|jpe?g|svg)$/)
@@ -40,7 +40,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="root">
+    <div className="root landing-root">
       <NavBar />
       <div>
         <Carousel
@@ -74,7 +74,7 @@ export default function Home() {
           IndicatorIcon={<CameraAltIcon />}
           className="carousel"
         >
-          {carouselImages.reverse().map((e, i) => (
+          {carouselImages.map((e, i) => (
             <div key={i} className="carousel-image-container">
               <div className="overlap-images">
                 <Image priority src={e} alt="" />

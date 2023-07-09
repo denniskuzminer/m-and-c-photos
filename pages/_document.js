@@ -11,7 +11,10 @@ export default class MyDocument extends Document {
         <Head>
           {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
-          <link rel="shortcut icon" href="/white-icons8-cameras-96.jpg" />
+          <link
+            rel="shortcut icon"
+            href="/white-icons8-cameras-96-rounded-diag.jpg"
+          />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"

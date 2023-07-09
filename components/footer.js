@@ -7,6 +7,7 @@ import Socials from "../components/socials";
 import Image from "next/image";
 import { Breakpoint, useCurrentBreakpointName } from "react-socks";
 import { setDefaultWidth } from "react-socks";
+import ImageViewer from "./imageViewer";
 
 const responsiveSettings = {
   masonryColumns: {
@@ -28,6 +29,19 @@ const responsiveSettings = {
 const images = importAll(
   require.context("../public/resources/footer", false, /\.(png|jpe?g|svg)$/)
 );
+
+function FooterImage({ index, styles }) {
+  return (
+    <Box className="footer-image portfolio-image-container" style={styles}>
+      <ImageViewer
+        images={images}
+        initIndex={index}
+        alt=""
+        src={images[index]}
+      />
+    </Box>
+  );
+}
 
 export default function Footer() {
   const breakpoint = useCurrentBreakpointName();
@@ -95,8 +109,8 @@ export default function Footer() {
         {["medium", "large", "xlarge"].includes(breakpoint) && (
           <div className="footer-images-container">
             {images.map((e, i) => (
-              <Box key={i} className="footer-image">
-                <Image alt="" src={e} />
+              <Box key={i} className="footer-image portfolio-image-container">
+                <ImageViewer images={images} initIndex={i} alt="" src={e} />
               </Box>
             ))}
           </div>
@@ -104,25 +118,15 @@ export default function Footer() {
         {["small", "xsmall"].includes(breakpoint) && (
           <div style={{ marginTop: "10px" }}>
             <div className="footer-images-container">
-              <Box className="footer-image">
-                <Image alt="" src={images[0]} />
-              </Box>
-              <Box className="footer-image">
-                <Image alt="" src={images[1]} />
-              </Box>
+              <FooterImage index={0} />
+              <FooterImage index={1} />
             </div>
             <div className="footer-images-container">
-              <Box className="footer-image">
-                <Image alt="" src={images[2]} />
-              </Box>
-              <Box className="footer-image">
-                <Image alt="" src={images[3]} />
-              </Box>
+              <FooterImage index={2} />
+              <FooterImage index={3} />
             </div>
             <center style={{ width: "100%" }}>
-              <Box className="footer-image" style={{ width: "46%" }}>
-                <Image alt="" src={images[4]} />
-              </Box>
+              <FooterImage style={{ width: "46%" }} index={4} />
             </center>
           </div>
         )}
